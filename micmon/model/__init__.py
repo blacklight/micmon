@@ -18,7 +18,7 @@ class Model:
     # noinspection PyShadowingNames
     def __init__(self, layers: Optional[List[Layer]] = None, labels: Optional[List[str]] = None,
                  model: Optional[_Model] = None, optimizer: Union[str, optimizers.Optimizer] = 'adam',
-                 loss: Union[str, Union[str, losses.Loss]] = 'sparse_categorical_crossentropy',
+                 loss: str = 'sparse_categorical_crossentropy',
                  metrics: List[Union[str, metrics.Metric]] = ('accuracy',),
                  low_freq: int = AudioSegment.default_low_freq,
                  high_freq: int = AudioSegment.default_high_freq):
