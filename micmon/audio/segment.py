@@ -1,7 +1,6 @@
-from typing import Optional, Union
+from typing import Optional
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 class AudioSegment:
@@ -30,11 +29,13 @@ class AudioSegment:
         ])
 
     def plot_audio(self):
+        import matplotlib.pyplot as plt
         plt.plot(self.audio)
         plt.show()
 
     def plot_spectrum(self, low_freq: int = default_low_freq, high_freq: int = default_high_freq,
                       bins: int = default_bins):
+        import matplotlib.pyplot as plt
         spectrum = self.spectrum(low_freq=low_freq, high_freq=high_freq, bins=bins)
         plt.ylim(0, 1)
         plt.bar(range(len(spectrum)), spectrum)
