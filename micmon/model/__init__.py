@@ -30,7 +30,7 @@ class Model:
 
         if layers:
             self._model = Sequential(layers)
-            self._model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
+            self._model.compile(optimizer=optimizer, loss=loss, metrics=list(metrics))
         else:
             self._model = model
 
