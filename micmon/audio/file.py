@@ -1,24 +1,40 @@
 import json
+import os
+import pathlib
 from typing import Optional, List, Tuple, Union
 
-from micmon.audio import AudioDirectory, AudioSegment, AudioSource
+from micmon.audio import AudioSegment, AudioSource, AudioDirectory
 
 
 class AudioFile(AudioSource):
-    def __init__(self, path: AudioDirectory,
+    def __init__(self,
+                 audio_file: Union[str, AudioDirectory],
+                 labels_file: Optional[str] = None,
                  start: Union[str, int, float] = 0,
                  duration: Optional[Union[str, int, float]] = None,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if isinstance(audio_file, AudioDirectory):
+            audio_file = audio_file.audio_file
+            labels_file = audio_file.labels_file
+
+        self.audio_file = os.path.abspath(os.path.expanduser(audio_file))
+
+        if not labels_file:
+            labels_file = os.path.join(pathlib.Path(self.audio_file).parent, 'labels.json')
+            if not os.path.isfile(labels_file):
+                labels_file = None
+
+        self.labels_file = os.path.abspath(os.path.expanduser(labels_file)) if labels_file else None
         self.ffmpeg_args = (
-            self.ffmpeg_bin, '-i', path.audio_file, *(('-ss', str(start)) if start else ()),
+            self.ffmpeg_bin, '-i', audio_file, *(('-ss', str(start)) if start else ()),
             *(('-t', str(duration)) if duration else ()), *self.ffmpeg_base_args
         )
 
         self.start = self.convert_time(start)/1000
         self.duration = self.convert_time(duration)/1000
-        self.segments = self.parse_labels_file(path.labels_file) \
-            if path.labels_file else []
+        self.segments = self.parse_labels_file(labels_file) \
+            if labels_file else []
 
         self.labels = sorted(list(set(label for timestamp, label in self.segments)))
         self.cur_time = self.start
@@ -53,4 +69,3 @@ class AudioFile(AudioSource):
             return audio
 
         raise StopIteration
-

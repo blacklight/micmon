@@ -2,7 +2,7 @@ import json
 import os
 import numpy as np
 
-from typing import List, Optional, Union, Tuple
+from typing import List, Optional, Union
 from keras import Sequential, losses, optimizers, metrics
 from keras.layers import Layer
 from keras.models import load_model, Model as _Model
@@ -20,10 +20,11 @@ class Model:
                  model: Optional[_Model] = None, optimizer: Union[str, optimizers.Optimizer] = 'adam',
                  loss: Union[str, losses.Loss] = losses.SparseCategoricalCrossentropy(from_logits=True),
                  metrics: List[Union[str, metrics.Metric]] = ('accuracy',),
-                 cutoff_frequencies: Tuple[int, int] = (AudioSegment.default_low_freq, AudioSegment.default_high_freq)):
+                 low_freq: int = AudioSegment.default_low_freq,
+                 high_freq: int = AudioSegment.default_high_freq):
         assert layers or model
         self.label_names = labels
-        self.cutoff_frequencies = list(map(int, cutoff_frequencies))
+        self.cutoff_frequencies = (int(low_freq), int(high_freq))
 
         if layers:
             self._model = Sequential(layers)
@@ -74,4 +75,4 @@ class Model:
             with open(freq_file, 'r') as f:
                 frequencies = json.load(f)
 
-        return cls(model=model, labels=label_names, cutoff_frequencies=frequencies)
+        return cls(model=model, labels=label_names, low_freq=frequencies[0], high_freq=frequencies[1])
