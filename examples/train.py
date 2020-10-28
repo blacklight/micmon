@@ -2,7 +2,7 @@
 # spectrum data.
 
 import os
-from keras import layers
+from tensorflow.keras import layers
 
 from micmon.dataset import Dataset
 from micmon.model import Model

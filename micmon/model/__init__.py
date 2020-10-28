@@ -4,9 +4,9 @@ import pathlib
 import numpy as np
 
 from typing import List, Optional
-from keras import Sequential
-from keras.layers import Layer
-from keras.models import load_model, Model as _Model
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Layer
+from tensorflow.keras.models import load_model, Model as _Model
 
 from micmon.audio import AudioSegment
 from micmon.dataset import Dataset

@@ -34,7 +34,11 @@ encoder to encode captured audio to mp3.
 Python dependencies:
 
 ```bash
-pip install numpy tensorflow keras
+# On Debian-based systems
+apt-get install libatlas-base-dev
+
+# Install Tensorflow
+pip install tensorflow
 
 # Optional, for graphs
 pip install matplotlib
@@ -203,12 +207,12 @@ Training the model
 ------------------
 
 Once you have some `.npz` datasets saved under `~/datasets/sound-detect/data`, you can
-use those datasets to train a Tensorflow+Keras model to classify an audio segment. A full
+use those datasets to train a Tensorflow model to classify an audio segment. A full
 example is available under `examples/train.py`:
 
 ```python
 import os
-from keras import layers
+from tensorflow.keras import layers
 
 from micmon.dataset import Dataset
 from micmon.model import Model
