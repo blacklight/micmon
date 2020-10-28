@@ -1,9 +1,8 @@
 import logging
-import os
 import signal
 import subprocess
 from abc import ABC
-from typing import Optional, Union, IO
+from typing import Optional, Union
 
 from micmon.audio.segment import AudioSegment
 
@@ -13,8 +12,7 @@ class AudioSource(ABC):
                  sample_duration: float = 2.0,
                  sample_rate: int = 44100,
                  channels: int = 1,
-                 ffmpeg_bin: str = 'ffmpeg',
-                 debug: bool = False):
+                 ffmpeg_bin: str = 'ffmpeg'):
         self.ffmpeg_bin = ffmpeg_bin
         self.ffmpeg_base_args = (
             '-f', 's16le',
@@ -28,10 +26,7 @@ class AudioSource(ABC):
         self.sample_duration = sample_duration
         self.sample_rate = sample_rate
         self.channels = channels
-        self.debug = debug
         self.logger = logging.getLogger(self.__class__.__name__)
-        self.logger.setLevel(logging.DEBUG if self.debug else logging.INFO)
-        self.devnull: Optional[IO] = None
 
     def __iter__(self):
         return self
@@ -47,12 +42,7 @@ class AudioSource(ABC):
         raise StopIteration
 
     def __enter__(self):
-        kwargs = dict(stdout=subprocess.PIPE)
-        if not self.debug:
-            self.devnull = open(os.devnull, 'w')
-            kwargs['stderr'] = self.devnull
-
-        self.ffmpeg = subprocess.Popen(self.ffmpeg_args, **kwargs)
+        self.ffmpeg = subprocess.Popen(self.ffmpeg_args, stdout=subprocess.PIPE)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -68,10 +58,6 @@ class AudioSource(ABC):
 
             self.ffmpeg.wait()
             self.ffmpeg = None
-
-        if self.devnull:
-            self.devnull.close()
-            self.devnull = None
 
     def pause(self):
         if not self.ffmpeg:
