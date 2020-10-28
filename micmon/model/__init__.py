@@ -2,8 +2,8 @@ import json
 import os
 import numpy as np
 
-from typing import List, Optional, Union
-from keras import Sequential, losses, optimizers, metrics
+from typing import List, Optional
+from keras import Sequential
 from keras.layers import Layer
 from keras.models import load_model, Model as _Model
 
@@ -17,9 +17,10 @@ class Model:
 
     # noinspection PyShadowingNames
     def __init__(self, layers: Optional[List[Layer]] = None, labels: Optional[List[str]] = None,
-                 model: Optional[_Model] = None, optimizer: Union[str, optimizers.Optimizer] = 'adam',
-                 loss: str = 'sparse_categorical_crossentropy',
-                 metrics: List[Union[str, metrics.Metric]] = ('accuracy',),
+                 model: Optional[_Model] = None,
+                 optimizer='adam',
+                 loss='sparse_categorical_crossentropy',
+                 metrics=('accuracy',),
                  low_freq: int = AudioSegment.default_low_freq,
                  high_freq: int = AudioSegment.default_high_freq):
         assert layers or model
