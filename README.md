@@ -131,7 +131,7 @@ will be something like this:
 
 ```bash
 micmon-datagen --low 250 --high 7500 --bins 100 --sample-duration 2 --channels 1 \
-    ~/datasets/sound-detect/audio  ~/models
+    ~/datasets/sound-detect/audio  ~/datasets/sound-detect/data
 ```
 
 The `--low` and `--high` options respectively identify the lowest and highest
