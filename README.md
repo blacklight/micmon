@@ -165,7 +165,7 @@ from micmon.audio import AudioDirectory, AudioPlayer, AudioFile
 from micmon.dataset import DatasetWriter
 
 basedir = os.path.expanduser('~/datasets/sound-detect')
-audio_dir = os.path.join(basedir, 'audio/sample_1')
+audio_dir = os.path.join(basedir, 'audio')
 datasets_dir = os.path.join(basedir, 'data')
 cutoff_frequencies = [250, 7500]
 
