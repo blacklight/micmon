@@ -15,8 +15,8 @@ class AudioFile(AudioSource):
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
         if isinstance(audio_file, AudioDirectory):
-            audio_file = audio_file.audio_file
             labels_file = audio_file.labels_file
+            audio_file = audio_file.audio_file
 
         self.audio_file = os.path.abspath(os.path.expanduser(audio_file))
 
